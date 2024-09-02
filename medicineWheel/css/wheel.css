@@ -1,5 +1,4 @@
 
-
 h1 {
     color: darkred;
     text-align: center;
@@ -69,7 +68,7 @@ footer {
     width: 30%;
     gap: 5px;
     padding: 10px;
-    top: -1000%;
+    top: -650%;
 }
 
 .menuVisible {
@@ -86,4 +85,35 @@ footer {
 @keyframes menu {
     0% {transform: translateY(0%)}
     100% {transform: translateY(134%)}
+}
+
+@media only screen and (min-width: 600px) {
+    body {
+        width: 600px;
+        margin: auto;
+        border: solid 3px darkcyan;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    body {
+        width: 1000px;
+        margin: auto;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #intro {
+        margin: auto;
+    }
+
+    #roda {
+        margin: auto;
+        width: 95%;
+    }
+
+    h1 {
+        margin: auto;
+    }
+
 }
