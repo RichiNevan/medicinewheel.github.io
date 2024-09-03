@@ -1,15 +1,16 @@
 <html>
-    <head>
-        <header>
-            <img src="images/menu.png" id="menuBut" alt="">
-            <div id = menu>
-                <div class="opzioni-item">Cos'è la Ruota di Medicina?</div>
-                <div class="opzioni-item">Chi siamo?</div>
-                <div class="opzioni-item">Perchè la scelta dell'emisfero?</div>
-                <div class="opzioni-item">Qualcos'altro</div>
-                <div class="opzioni-item">E ancora...</div>
-            </div>
-        </header>
+    <nav>
+        <ul>
+            <li><a href="#">Menu</a>
+            <ul class="dropdown">
+              <li><a href="#">Cos'è la Ruota di Medicina?</a></li>
+              <li><a href="#">Chi siamo?</a></li>
+              <li><a href="#">Perchè la scelta dell'emisfero?</a></li>
+            </ul></li>
+        </ul>
+    </nav>
+    <div id="colonna"></div>
+    <head> 
         <h1>The Medicine Wheel</h1>
         <select>
             <option>Emisfero boreale</option>
@@ -26,8 +27,8 @@
         </p>
         <p>Stagione: <a id="stagione" href="https://www.xamanismo.com.br/o-verao/">Stagione</a></p>
         <p>Direzione: <a id="direzione" href="https://www.xamanismo.com.br">Direzione</a></p>
-        <p>Luna: <a id="luna" href="">Luna</a></p>
-        <p>Totem animale: <a href="">Totem animale</a></p>
+        <p>Luna: <a id="luna" href="#">Luna</a></p>
+        <p>Totem animale: <a id ="animLuna" href="">Totem animale</a></p>
         <p>Totem vegetale: <a href="">Totem vegetale</a></p>
         <p>Totem Minerale: <a href="">Totem minerale</a></p>
         <p>Colore: <a href="">Colore</a></p>
@@ -39,11 +40,10 @@
         <link rel="stylesheet" href="css/wheel.css">
         <link rel="reset" href="css/reset.css">
     </body>
-    <footer class="opzioni-container">
-        <ul>
-            <li class="opzioni-item">Bibliografia</li>
-            <li class="opzioni-item">Supportaci!</li>
-            <li class="opzioni-item">Contatti</li>
-        </ul>
+    </div>
+    <footer class="container">
+        <div class="item">Bibliografia</div>
+        <div class="item">Supportaci!</div>
+        <div class="item">Contatti</div>
     </footer>
 </html>
