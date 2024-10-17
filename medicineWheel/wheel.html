@@ -1,49 +1,29 @@
+<!DOCTYPE html>
 <html>
-    <nav>
-        <ul>
-            <li><a href="#">Menu</a>
-            <ul class="dropdown">
-              <li><a href="#">Cos'è la Ruota di Medicina?</a></li>
-              <li><a href="#">Chi siamo?</a></li>
-              <li><a href="#">Perchè la scelta dell'emisfero?</a></li>
-            </ul></li>
-        </ul>
-    </nav>
-    <div id="colonna"></div>
-    <head> 
-        <h1>The Medicine Wheel</h1>
-        <select>
-            <option>Emisfero boreale</option>
-            <option>Emisfero australe</option>
-        </select>
-        <p id="today">Data:</p>
-        <img src="images/roda.jpg" alt="Medicine Wheel" id="roda">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/p5.min.js" type="text/javascript"></script>
+        <script src="js/p5.sound.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="css/wheel.css">
+        <link rel="reset" href="css/reset.css">
     </head>
-    
     <body>
-        <p id="intro">Questo sito si propone di essere un portale di accesso alla ruota di medicina,<br>
-            come studiata ed elaborata da Leo Artese, secondo la tradizione Lakota.<br> 
-            Qui, si potranno studiare le stagioni, le lune, ed i totem associati al momento attuale dell'anno. 
-        </p>
+        <div id="canvas-container"></div>
+        <div id="links">
         <p>Stagione: <a id="stagione" href="https://www.xamanismo.com.br/o-verao/">Stagione</a></p>
         <p>Direzione: <a id="direzione" href="https://www.xamanismo.com.br">Direzione</a></p>
         <p>Luna: <a id="luna" href="#">Luna</a></p>
         <p>Totem animale: <a id ="animLuna" href="">Totem animale</a></p>
         <p>Totem vegetale: <a href="">Totem vegetale</a></p>
         <p>Totem Minerale: <a href="">Totem minerale</a></p>
-        <p>Colore: <a href="">Colore</a></p>
-        
+        <p>Colore: <a href="">Colore</a></p><br>
+        <a href="entrance.html" id="goBack">Torna all'entrata</a>
+        </div>
+        <script id="roda" src= "sketch.js"></script>
         <script src=js/stagioni.js></script>
-        <script src=js/today.js></script>
         <script src=js/direzione.js></script>
         <script src=js/lune.js></script>
-        <link rel="stylesheet" href="css/wheel.css">
-        <link rel="reset" href="css/reset.css">
     </body>
-    </div>
-    <footer class="container">
-        <div class="item">Bibliografia</div>
-        <div class="item">Supportaci!</div>
-        <div class="item">Contatti</div>
-    </footer>
+</div>
 </html>
