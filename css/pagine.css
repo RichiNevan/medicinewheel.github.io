@@ -12,8 +12,16 @@ p {
 
 body {
     background-image: url("../images/background.jpg");
+    background-size: 100%;
 }
 
 footer {
     text-align: center;
+}
+
+@media only screen and (min-width: 600px) {
+   p {
+    width: 40%;
+    margin: 0 auto;
+   }
 }

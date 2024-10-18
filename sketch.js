@@ -46,6 +46,12 @@ let moon11 = (-getDegrees(306)-90);
 let moon12 = (-getDegrees(336)-90); 
 
 
+const menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', () => {
+  menuBtn.classList.toggle('clicked')
+  document.getElementById('links').classList.toggle('dropdown')
+})
+
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES)
@@ -68,12 +74,19 @@ function draw() {
   background(img);
   translate(width/2, height/2)
   wheel()
+  if (windowWidth < 600) {
+    zoom = 0.8
+  } else if (windowWidth < 450) {
+    zoom = 0.3
+    offsetY = -150
+    document.getElementById('links').classList.add('smallDevice')
+  }
   
 }
 
 //Functions related to zooming and panning with the mouse
 function mouseWheel(event) {
-  let zoomFactor = 0.03;
+  let zoomFactor = 0.01;
   if(event.delta > 0) {
     zoom *= (1- zoomFactor);
   } else {
