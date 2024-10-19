@@ -17,11 +17,16 @@ menuBtn.onclick = function() {
 let emisferoSel = document.getElementById("emisfero")
 emisferoSel.addEventListener("input", () => {
     if (emisferoSel.value == "Emisferio Norte") {
-        localStorage.setItem("emisfero", "Emisferio Norte")
+        localStorage.setItem("emisfero", "Nord")
     } else if (emisferoSel.value == "Emisferio Sul") {
         console.log("ciao")
-        localStorage.setItem("emisfero", "Emisferio Sul")
+        localStorage.setItem("emisfero", "Sud")
 }})
 
 let emisferoSelezionato = localStorage.getItem('emisfero')
-emisferoSel.value = emisferoSelezionato
+
+if (emisferoSelezionato == "Nord") {
+    emisferoSel.value = "Emisferio Norte"
+} else {
+    emisferoSel.value = "Emisferio Sul"
+}

@@ -11,11 +11,11 @@ class Direzione {
     }
 
     inizio() {
-        return (new Date(oggiStag.getFullYear(), this.meseInizio - 1, this.giornoInizio))
+        return (new Date(oggiDir.getFullYear(), this.meseInizio - 1, this.giornoInizio))
     }
 
     fine() {
-        return (new Date(oggiStag.getFullYear(), this.meseFine - 1, this.giornoFine))
+        return (new Date(oggiDir.getFullYear(), this.meseFine - 1, this.giornoFine))
     }
 }
 
@@ -42,7 +42,7 @@ const direzioni = [
 ];
 
 let emisferoDir = localStorage.getItem('emisfero')
-if (emisferoDir == "Emisferio Sul") {
+if (emisferoDir == "Sud") {
     direzioni[0].meseInizio = 6; direzioni[0].giornoInizio = 21; direzioni[0].meseFine = 7; direzioni[0].giornoFine = 31;
     direzioni[1].meseInizio = 8; direzioni[1].giornoInizio = 1; direzioni[1].meseFine = 9; direzioni[1].giornoFine = 20;
     direzioni[2].meseInizio = 9; direzioni[2].giornoInizio = 21; direzioni[2].meseFine = 10; direzioni[2].giornoFine = 30;

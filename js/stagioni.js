@@ -29,8 +29,8 @@ let stagioni = [
 
 console.log(stagioni[0])
 
-let emisfero = localStorage.getItem('emisfero')
-if (emisfero == "Emisferio Sul") {
+let emisferoStag = localStorage.getItem('emisfero')
+if (emisferoStag == "Sud") {
     stagioni[0].meseInizio = 6; stagioni[0].giornoInizio = 22; stagioni[0].meseFine = 9; stagioni[0].giornoFine = 21;
     stagioni[1].meseInizio = 9; stagioni[1].giornoInizio = 22; stagioni[1].meseFine = 12; stagioni[1].giornoFine = 21;
     stagioni[2].meseInizio = 12; stagioni[2].giornoInizio = 22; stagioni[2].meseFine = 1; stagioni[2].giornoFine = 21;
