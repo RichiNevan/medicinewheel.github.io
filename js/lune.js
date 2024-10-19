@@ -113,7 +113,7 @@ let emisferoLune = localStorage.getItem('emisfero')
 
 
 
-if (emisferoLune == "Emisferio Sul") {
+if (emisferoLune == "Sud") {
     lune[0].meseInizio = 7; lune[0].giornoInizio = 5; lune[0].meseFine = 8; lune[0].giornoFine = 3; 
     lune[1].meseInizio = 8; lune[1].giornoInizio = 4; lune[1].meseFine = 9; lune[1].giornoFine = 1; 
     lune[2].meseInizio = 9; lune[2].giornoInizio = 2; lune[2].meseFine = 10; lune[2].giornoFine = 1; 
