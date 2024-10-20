@@ -25,6 +25,11 @@ let emisfero = localStorage.getItem('emisfero')
 let displayDate;
 const zoomIn = document.getElementById("zoomIn")
 const zoomOut = document.getElementById("zoomOut")
+let bufalo;
+function preload() {
+  gill = loadFont('Gill Sans.otf')
+  bufalo = loadImage('images/bufalone.png')
+}
 
 
 
@@ -59,24 +64,26 @@ menuBtn.addEventListener('click', () => {
 })
 
 function setup() {
-  let canvas = createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES)
   textAlign(CENTER);
-  textFont("Georgia")
+  
   img = loadImage('images/background.jpg')
-  console.log(windowWidth)
   if (windowWidth < 450) {
-    zoom = 0.55
+    zoom = 0.6
     offsetY = -40
   } else {
     zoom = 1
   }
+
 }
 
-zoomIn.addEventListener('click', () => zoom += 0.01)
-zoomOut.addEventListener('click', () => zoom -= 0.01)
+
+//zoomIn.addEventListener('click', () => zoom += 0.01)
+//zoomOut.addEventListener('click', () => zoom -= 0.01)
 
 function draw() {
+  textFont("Georgia")
   background(img);
   fill(180, 130, 170)
   stroke(30)
@@ -93,7 +100,6 @@ function draw() {
   } else {
     writeMoonsNamesSUD()
   }
-  
   writeCardinals()
   
 
@@ -137,10 +143,11 @@ function drawAllMoons() {
 }
 
 function writeMoonsNamesNORD() {
+  textFont(gill)
   stroke(0)
   strokeWeight(0.5)
   noFill()
-  textSize(8)
+  textSize(8.5)
   drawTextOnArc("Lua da", rm+30, moon1, 1, -2.5); drawTextOnArc("Renovaçao", rm+23, moon1, 1, -4);
   drawTextOnArc("Lua da", rm+32, moon2, 1, -2.5); drawTextOnArc("Limpeza", rm+23, moon2, 1, -3.2);
   drawTextOnArc("Lua dos", rm+32, moon3, 1, -2.5); drawTextOnArc("Ventos Fortes", rm+23, moon3, 1, -5.5);
@@ -159,7 +166,7 @@ function writeMoonsNamesSUD() {
   stroke(0)
   strokeWeight(0.5)
   noFill()
-  textSize(8)
+  textSize(8.5)
   drawTextOnArc("Lua da", rm+30, moon7, 1, -2.5); drawTextOnArc("Renovaçao", rm+23, moon7, 1, -4);
   drawTextOnArc("Lua da", rm+32, moon8, 1, -2.5); drawTextOnArc("Limpeza", rm+23, moon8, 1, -3.2);
   drawTextOnArc("Lua dos", rm+32, moon9, 1, -2.5); drawTextOnArc("Ventos Fortes", rm+23, moon9, 1, -5.5);
@@ -199,6 +206,7 @@ function wheel() {
   translate(offsetX, offsetY)
   scale(zoom)
   drawToday()
+  
 
   if (emisfero == "Nord") {
   rotate(getDegrees(todayNum)) //At 0 degrees, the wheel is set on the spring equinox
@@ -216,7 +224,16 @@ function wheel() {
   let pri = arc(0, 0, 500, 500, angle3, angle4);
   fill(225)
   let inv = arc(0, 0, 500, 500, angle4, angle1);
-
+  push()
+  imageMode(CENTER)
+  if (emisfero == "Nord") {
+  rotate(-getDegrees(todayNum))
+  } else {
+    rotate(-getDegrees(todayNum)-180)
+  }
+  image(bufalo, 0, 0)
+  
+  pop()
   // Concentric circles
   drawConcCircles()
   
@@ -252,6 +269,7 @@ function writeCardinals() {
   textSize(40)
   strokeWeight(1.0)
   noFill()
+  textFont('Georgia')
   drawTextOnArc("N", rm+45, angle1, 1, 0)
   drawTextOnArc("O", rm+45, angle2, 1, 0)
   drawTextOnArc("S", rm+45, angle3, 1, 0)
@@ -261,7 +279,6 @@ function writeCardinals() {
 
 function drawConcCircles() {
   strokeWeight(2)
-  circle(0, 0, 30)
   noFill()
   circle(0, 0, 150)
   circle(0, 0, 180)
@@ -300,7 +317,7 @@ function drawToday() {
   fill(180, 130, 170)
   stroke(30)
   strokeWeight(1)
-  triangle(0, -rm, 10, -rm-70, -10, -rm-70)
+  triangle(0, -rm, 7, -rm-70, -7, -rm-70)
   textSize(20) 
 }
 

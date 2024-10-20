@@ -3,6 +3,12 @@ body {
     height: 100%;
     overflow: hidden;
 }
+
+#bufalo {
+    position: absolute;
+    border-radius: 50%;
+}
+
 a {
     color: darkgreen;
     z-index: 999;
