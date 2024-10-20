@@ -22,6 +22,11 @@ let bodies = ["CORPO MENTAL", "CORPO ESPIRITUAL", "CORPO EMOCIONAL", "CORPO FISI
 let realms = ["REINO ANIMAL", "REINO ESPIRITUAL", "REINO EMOCIONAL", "REINO MINERAL"]
 let spirits = ["WABOOSE", "WABUN", "SHAWNODESE", "MUDJEKEEWIS"]
 let emisfero = localStorage.getItem('emisfero')
+let displayDate;
+const zoomIn = document.getElementById("zoomIn")
+const zoomOut = document.getElementById("zoomOut")
+
+
 
 //Defining function to map angle degrees to days of the year
 function getDegrees(day) {
@@ -56,13 +61,20 @@ menuBtn.addEventListener('click', () => {
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES)
-  canvas.parent('canvas-container')
   textAlign(CENTER);
   textFont("Georgia")
-  console.log("today: "+todayNum)
-  console.log("moon10: " + moon10)
   img = loadImage('images/background.jpg')
+  console.log(windowWidth)
+  if (windowWidth < 450) {
+    zoom = 0.55
+    offsetY = -40
+  } else {
+    zoom = 1
+  }
 }
+
+zoomIn.addEventListener('click', () => zoom += 0.01)
+zoomOut.addEventListener('click', () => zoom -= 0.01)
 
 function draw() {
   background(img);
@@ -70,7 +82,8 @@ function draw() {
   stroke(30)
   strokeWeight(1)
   textSize(20)
-  text("TODAY: "+ tday.getDate() + "/" + (tday.getMonth()+1) + "/" + tday.getFullYear(), 210, 82)
+  displayDate = text("TODAY: "+ tday.getDate() + "/" + (tday.getMonth()+1) + "/" + tday.getFullYear(), windowWidth/2, windowHeight-50)
+  
   translate(width/2, height/2)
   wheel()
   drawAllMoons()
@@ -83,11 +96,7 @@ function draw() {
   
   writeCardinals()
   
-  if (windowWidth < 600) {
-    zoom = 0.8
-  } else if (windowWidth < 450) {
-    zoom = 0.1
-  }
+
   //rotateWheel()
   //console.log("framerate: " + frameRate())
 }
@@ -175,7 +184,7 @@ function mouseWheel(event) {
   }
   return false;
 }
-/*
+
 function mousePressed() {
   dragStartX = mouseX - offsetX
   dragStartY = mouseY - offsetY
@@ -183,7 +192,7 @@ function mousePressed() {
 function mouseDragged() {
   offsetX = mouseX - dragStartX;
   offsetY = mouseY - dragStartY;
-}*/
+}
 
 
 function wheel() {
