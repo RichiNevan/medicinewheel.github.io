@@ -34,9 +34,11 @@ let emisferoSelezionato = localStorage.getItem('emisfero')
 
 if (emisferoSelezionato == "Nord") {
     emisferoSel.value = "Emisferio Norte"
+    document.getElementById('temp').style.display = 'none'
     
 } else if (emisferoSelezionato == "Sud") {
     emisferoSel.value = "Emisferio Sul"
+    document.getElementById('temp').style.display = 'none'
     
 } else {
     emisferoSel.value = "Escolhe..."

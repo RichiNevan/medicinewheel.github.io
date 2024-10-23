@@ -8,7 +8,7 @@ let angle1 = 0;
 let angle2 = 90;
 let angle3 = 180;
 let angle4 = 270;
-let speed = 0.1;
+let speed = 0.05;
 let r1 = 64
 let r2 = 79
 let r3 = 94
@@ -23,9 +23,7 @@ let realms = ["REINO ANIMAL", "REINO ESPIRITUAL", "REINO EMOCIONAL", "REINO MINE
 let spirits = ["WABOOSE", "WABUN", "SHAWNODESE", "MUDJEKEEWIS"]
 let emisfero = localStorage.getItem('emisfero')
 let displayDate;
-const zoomIn = document.getElementById("zoomIn")
-const zoomOut = document.getElementById("zoomOut")
-let bufalo;
+let bufalo, img, gill;
 function preload() {
   gill = loadFont('Gill Sans.otf')
   bufalo = loadImage('images/bufalone.png')
@@ -35,7 +33,7 @@ let tG;
 
 function rotating() {
   rotateWheel()
-  rotate(frameCount*0.1)
+  rotate(frameCount*0.05)
 }
 
 //Defining function to map angle degrees to days of the year
@@ -77,12 +75,15 @@ function setup() {
   tG.textAlign(CENTER, CENTER);
   tG.angleMode(DEGREES)
   
+  
   if (emisfero == "Nord") {
     writeMoonsNamesNORD(tG)
+    wheelTextNORD(tG)
   } else {
     writeMoonsNamesSUD(tG)
+    wheelTextSUD(tG)
   }
-  console.log(tG)
+
   
   if (windowWidth < 450) {
     zoom = 0.6
@@ -93,9 +94,6 @@ function setup() {
 
 }
 
-
-//zoomIn.addEventListener('click', () => zoom += 0.01)
-//zoomOut.addEventListener('click', () => zoom -= 0.01)
 
 function draw() {
   background(img);
@@ -112,25 +110,12 @@ function draw() {
   writeCardinals()
   drawAllMoons()
  
-
-  //translate(offsetX, offsetY)
   push()
-  //rotating()
   imageMode(CENTER)
   image(tG, 0, 0)
   pop()
 
-
-  /*if (emisfero == "Nord") {
-    writeMoonsNamesNORD()
-  } else {
-    writeMoonsNamesSUD()
-  }*/
- 
-  
-
-  //rotateWheel()
-  
+  //console.log(frameRate())
 }
 function drawAllMoons() {
   if (emisfero == "Sud") {
@@ -194,16 +179,16 @@ function writeMoonsNamesSUD(g) {
   g.textSize(11.5)
   drawTextOnArcBuff(g, "Lua da", rm+30, moon7, 1, -2.5); drawTextOnArcBuff(g, "Renovaçao", rm+20, moon7, 1, -4);
   drawTextOnArcBuff(g, "Lua da", rm+32, moon8, 1, -2.5); drawTextOnArcBuff(g, "Limpeza", rm+23, moon8, 1, -3.2);
-  drawTextOnArcBuff(g, "Lua dos", rm+32, moon9, 1, -2.5); drawTextOnArcBuff(g, "Ventos Fortes", rm+23, moon9, 1, -6);
-  drawTextOnArcBuff(g, "Lua dos", rm+32, moon10, 1, -3); drawTextOnArcBuff(g, "Novos Começos", rm+23, moon10, 1, -6);
-  drawTextOnArcBuff(g, "Lua do", rm+32, moon11, 1, -2.5); drawTextOnArcBuff(g, "Crescimento", rm+23, moon11, 1, -6);
-  drawTextOnArcBuff(g, "Lua da", rm+32, moon12, 1, -2.5); drawTextOnArcBuff(g, "Floraçao", rm+23, moon12, 1, -3.5);
-  drawTextOnArcBuff(g, "Lua dos", rm+32, moon1, 1, -2.5); drawTextOnArcBuff(g, "Dias Longos", rm+23, moon1, 1, -4);
-  drawTextOnArcBuff(g, "Lua do", rm+32, moon2, 1, -2.5); drawTextOnArcBuff(g, "Amadurecimento", rm+23, moon2, 1, -6.5);
-  drawTextOnArcBuff(g, "Lua da", rm+32, moon3, 1, -2.5); drawTextOnArcBuff(g, "Abundancia", rm+23, moon3, 1, -4.5);
-  drawTextOnArcBuff(g, "Lua do", rm+32, moon4, 1, -2.5); drawTextOnArcBuff(g, "Cair das Folhas", rm+23, moon4, 0.9, -6);
-  drawTextOnArcBuff(g, "Lua da", rm+32, moon5, 1, -2.5); drawTextOnArcBuff(g, "Decomposiçao", rm+23, moon5, 1, -5);
-  drawTextOnArcBuff(g, "Lua das", rm+32, moon6, 1, -2.5); drawTextOnArcBuff(g, "Noites Longas", rm+23, moon6, 1, -6);
+  drawTextOnArcBuff(g, "Lua dos", rm+32, moon9, 1, -2.5); drawTextOnArcBuff(g, "Ventos Fortes", rm+22, moon9, 1, -6);
+  drawTextOnArcBuff(g, "Lua dos", rm+32, moon10, 1, -3); drawTextOnArcBuff(g, "Novos Começos", rm+22, moon10, 1, -6);
+  drawTextOnArcBuff(g, "Lua do", rm+32, moon11, 1, -2.5); drawTextOnArcBuff(g, "Crescimento", rm+22, moon11, 1, -6);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon12, 1, -2.5); drawTextOnArcBuff(g, "Floraçao", rm+22, moon12, 1, -3.5);
+  drawTextOnArcBuff(g, "Lua dos", rm+32, moon1, 1, -3.5); drawTextOnArcBuff(g, "Dias Longos", rm+22, moon1, 1, -6);
+  drawTextOnArcBuff(g, "Lua do", rm+32, moon2, 1, -2.5); drawTextOnArcBuff(g, "Amadurecimento", rm+22, moon2, 1, -7.5);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon3, 1, -3.5); drawTextOnArcBuff(g, "Abundancia", rm+22, moon3, 1, -5.5);
+  drawTextOnArcBuff(g, "Lua do", rm+32, moon4, 1, -3.5); drawTextOnArcBuff(g, "Cair das Folhas", rm+22, moon4, 0.9, -8);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon5, 1, -3.5); drawTextOnArcBuff(g, "Decomposiçao", rm+23, moon5, 1, -7);
+  drawTextOnArcBuff(g, "Lua das", rm+32, moon6, 1, -2.5); drawTextOnArcBuff(g, "Noites Longas", rm+23, moon6, 0.9, -6);
 }
 
 //Functions related to zooming and panning with the mouse
@@ -231,7 +216,6 @@ function wheel() {
   translate(offsetX, offsetY)
   scale(zoom)
   drawToday()
-  textFont('Georgia')
 
   if (emisfero == "Nord") {
   rotate(getDegrees(todayNum)) //At 0 degrees, the wheel is set on the spring equinox
@@ -257,39 +241,74 @@ function wheel() {
     rotate(-getDegrees(todayNum)-180)
   }
   image(bufalo, 0, 0)
-  
   pop()
+  
   // Concentric circles
   drawConcCircles()
-  
-  //Text on the Wheel
-  textSize(10)
-  strokeWeight(0.7)
-  drawTextOnArc(elements[0], r1, angle4, 7, 45)
-  drawTextOnArc(elements[1], r1, angle3, 7, 33)
-  drawTextOnArc(elements[2], r1, angle2, 7, 30)
-  drawTextOnArc(seasons[0], r2, angle4, 6, 30)
-  drawTextOnArc(seasons[1], r2, angle3, 6, 22)
-  drawTextOnArc(seasons[2], r2, angle2, 6, 30)
-  drawTextOnArc(bodies[0], r3, angle4, 5, 16)
-  drawTextOnArc(bodies[1], r3, angle3, 4, 16)
-  drawTextOnArc(bodies[2], r3, angle2, 5, 10)
-  drawTextOnArc(realms[0], r4, angle4, 5, 16)
-  drawTextOnArc(realms[1], r4, angle3, 4, 16)
-  drawTextOnArc(realms[2], r4, angle2, 5, 9)
-  fill(255)
-  drawTextOnArc(elements[3], r1, angle1, 7, 34)
-  drawTextOnArc(seasons[3], r2, angle1, 7, 30)
-  drawTextOnArc(bodies[3], r3, angle1, 5, 19)
-  drawTextOnArc(realms[3], r4, angle1, 5, 16)
-  textSize(20)
-  drawTextOnArc(spirits[3], r5, angle1, 6, 15)
-  fill(0)
-  drawTextOnArc(spirits[0], r5, angle4, 6, 27)
-  drawTextOnArc(spirits[1], r5, angle3, 6, 32)
-  drawTextOnArc(spirits[2], r5, angle2, 7, 12)
-  
 }
+
+function wheelTextNORD(g) {
+  g.textFont('Georgia')
+  g.textSize(10)
+  g.strokeWeight(0.7)
+  drawTextOnArcBuff(g, elements[0], r1-2, angle4, 7, 45)
+  drawTextOnArcBuff(g, elements[1], r1-2, angle3, 7, 33)
+  drawTextOnArcBuff(g, elements[2], r1-2, angle2, 7, 30)
+  drawTextOnArcBuff(g, seasons[0], r2-2, angle4, 6, 30)
+  drawTextOnArcBuff(g, seasons[1], r2-2, angle3, 6, 22)
+  drawTextOnArcBuff(g, seasons[2], r2-2, angle2, 6, 30)
+  drawTextOnArcBuff(g, bodies[0], r3-2, angle4, 5, 16)
+  drawTextOnArcBuff(g, bodies[1], r3-2, angle3, 4, 16)
+  drawTextOnArcBuff(g, bodies[2], r3-2, angle2, 5, 10)
+  drawTextOnArcBuff(g, realms[0], r4-2, angle4, 5, 16)
+  drawTextOnArcBuff(g, realms[1], r4-2, angle3, 4, 16)
+  drawTextOnArcBuff(g, realms[2], r4-2, angle2, 5, 9)
+  g.fill(255)
+  drawTextOnArcBuff(g, elements[3], r1-2, angle1, 7, 34)
+  drawTextOnArcBuff(g, seasons[3], r2-2, angle1, 7, 30)
+  drawTextOnArcBuff(g, bodies[3], r3-2, angle1, 5, 19)
+  drawTextOnArcBuff(g, realms[3], r4-2, angle1, 5, 16)
+  g.textSize(20)
+  g.strokeWeight(1)
+  g.fill(255)
+  drawTextOnArcBuff(g, spirits[3], r5, angle1, 6, 15)
+  g.fill(0)
+  drawTextOnArcBuff(g, spirits[0], r5, angle4, 6, 27)
+  drawTextOnArcBuff(g, spirits[1], r5, angle3, 6, 32)
+  drawTextOnArcBuff(g, spirits[2], r5, angle2, 7, 12)
+}
+
+function wheelTextSUD(g) {
+  g.textFont('Georgia')
+  g.textSize(10)
+  g.strokeWeight(0.7)
+  drawTextOnArcBuff(g, elements[0], r1-2, angle2, 7, 45)
+  drawTextOnArcBuff(g, elements[1], r1-2, angle1, 7, 33)
+  drawTextOnArcBuff(g, elements[2], r1-2, angle4, 7, 30)
+  drawTextOnArcBuff(g, seasons[0], r2-2, angle2, 6, 30)
+  drawTextOnArcBuff(g, seasons[1], r2-2, angle1, 6, 22)
+  drawTextOnArcBuff(g, seasons[2], r2-2, angle4, 6, 30)
+  drawTextOnArcBuff(g, bodies[0], r3-2, angle2, 5, 16)
+  drawTextOnArcBuff(g, bodies[1], r3-2, angle1, 4, 16)
+  drawTextOnArcBuff(g, bodies[2], r3-2, angle4, 5, 10)
+  drawTextOnArcBuff(g, realms[0], r4-2, angle2, 5, 16)
+  drawTextOnArcBuff(g, realms[1], r4-2, angle1, 4, 16)
+  drawTextOnArcBuff(g, realms[2], r4-2, angle4, 5, 9)
+  g.fill(255)
+  drawTextOnArcBuff(g, elements[3], r1-2, angle3, 7, 34)
+  drawTextOnArcBuff(g, seasons[3], r2-2, angle3, 7, 30)
+  drawTextOnArcBuff(g, bodies[3], r3-2, angle3, 5, 19)
+  drawTextOnArcBuff(g, realms[3], r4-2, angle3, 5, 16)
+  g.textSize(20)
+  g.strokeWeight(1)
+  g.fill(255)
+  drawTextOnArcBuff(g, spirits[3], r5, angle3, 6, 15)
+  g.fill(0)
+  drawTextOnArcBuff(g, spirits[0], r5, angle2, 6, 27)
+  drawTextOnArcBuff(g, spirits[1], r5, angle1, 6, 32)
+  drawTextOnArcBuff(g, spirits[2], r5, angle4, 7, 12)
+}
+
 
 function writeCardinals() {
   textSize(40)
@@ -312,7 +331,8 @@ function drawConcCircles() {
   circle(0, 0, 210)
   circle(0, 0, 240)
 }
-//Defining the function that makes text follow the arc
+
+
 function drawTextOnArcBuff(g, str, r, startAngle, angleStep, adj) {
   for (let i=0; i<str.length; i++) {
     let theta = startAngle + i * (angleStep+0.3) + adj;
@@ -327,6 +347,7 @@ function drawTextOnArcBuff(g, str, r, startAngle, angleStep, adj) {
     g.pop()
   }
 }
+
 
 function drawTextOnArc(str, r, startAngle, angleStep, adj) {
   for (let i=0; i<str.length; i++) {
@@ -344,8 +365,6 @@ function drawTextOnArc(str, r, startAngle, angleStep, adj) {
 }
 
 function rotateWheel() {
-  //tG.rotate(frameCount)
-  //rotate(frameCount)
   angle1 += speed; angle2 += speed; angle3 += speed; angle4 += speed;
   moon1 += speed; moon2 += speed; moon3 += speed; moon4 += speed;
   moon5 += speed; moon6 += speed; moon7 += speed; moon8 += speed;
