@@ -1,5 +1,5 @@
-new p5()
 
+new p5()
 let offsetX = 0;
 let offsetY = 0;
 let zoom = 1.0;
@@ -29,9 +29,14 @@ let bufalo;
 function preload() {
   gill = loadFont('Gill Sans.otf')
   bufalo = loadImage('images/bufalone.png')
+  img = loadImage('images/background.jpg')
 }
+let tG;
 
-
+function rotating() {
+  rotateWheel()
+  rotate(frameCount*0.1)
+}
 
 //Defining function to map angle degrees to days of the year
 function getDegrees(day) {
@@ -67,8 +72,18 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES)
   textAlign(CENTER);
+
+  tG = createGraphics(windowWidth, windowHeight);
+  tG.textAlign(CENTER, CENTER);
+  tG.angleMode(DEGREES)
   
-  img = loadImage('images/background.jpg')
+  if (emisfero == "Nord") {
+    writeMoonsNamesNORD(tG)
+  } else {
+    writeMoonsNamesSUD(tG)
+  }
+  console.log(tG)
+  
   if (windowWidth < 450) {
     zoom = 0.6
     offsetY = -40
@@ -83,7 +98,6 @@ function setup() {
 //zoomOut.addEventListener('click', () => zoom -= 0.01)
 
 function draw() {
-  textFont("Georgia")
   background(img);
   fill(180, 130, 170)
   stroke(30)
@@ -92,26 +106,38 @@ function draw() {
   displayDate = text("TODAY: "+ tday.getDate() + "/" + (tday.getMonth()+1) + "/" + tday.getFullYear(), windowWidth/2, windowHeight-50)
   
   translate(width/2, height/2)
+  
   wheel()
+  
+  writeCardinals()
   drawAllMoons()
+ 
 
-  if (emisfero == "Nord") {
+  //translate(offsetX, offsetY)
+  push()
+  //rotating()
+  imageMode(CENTER)
+  image(tG, 0, 0)
+  pop()
+
+
+  /*if (emisfero == "Nord") {
     writeMoonsNamesNORD()
   } else {
     writeMoonsNamesSUD()
-  }
-  writeCardinals()
+  }*/
+ 
   
 
   //rotateWheel()
-  //console.log("framerate: " + frameRate())
+  
 }
-
 function drawAllMoons() {
   if (emisfero == "Sud") {
     rotate(180)
   }
   stroke(255, 255)
+  fill(0)
   strokeWeight(1.5)
   drawMoon(moon1); 
   drawMoon(moon2)
@@ -142,43 +168,42 @@ function drawAllMoons() {
   drawTextOnArc("1/11", rm-2, moon11, 1.1, -1.7)
 }
 
-function writeMoonsNamesNORD() {
-  textFont(gill)
-  stroke(0)
-  strokeWeight(0.5)
-  noFill()
-  textSize(8.5)
-  drawTextOnArc("Lua da", rm+30, moon1, 1, -2.5); drawTextOnArc("Renovaçao", rm+23, moon1, 1, -4);
-  drawTextOnArc("Lua da", rm+32, moon2, 1, -2.5); drawTextOnArc("Limpeza", rm+23, moon2, 1, -3.2);
-  drawTextOnArc("Lua dos", rm+32, moon3, 1, -2.5); drawTextOnArc("Ventos Fortes", rm+23, moon3, 1, -5.5);
-  drawTextOnArc("Lua dos", rm+32, moon4, 1, -2.5); drawTextOnArc("Novos Começos", rm+23, moon4, 1, -5.5);
-  drawTextOnArc("Lua do", rm+32, moon5, 1, -2.5); drawTextOnArc("Crescimento", rm+23, moon5, 1, -5);
-  drawTextOnArc("Lua da", rm+32, moon6, 1, -2.5); drawTextOnArc("Floraçao", rm+23, moon6, 1, -3.5);
-  drawTextOnArc("Lua dos", rm+32, moon7, 1, -2.5); drawTextOnArc("Dias Longos", rm+23, moon7, 1, -4);
-  drawTextOnArc("Lua do", rm+32, moon8, 1, -2.5); drawTextOnArc("Amadurecimento", rm+23, moon8, 1, -6.5);
-  drawTextOnArc("Lua da", rm+32, moon9, 1, -2.5); drawTextOnArc("Abundancia", rm+23, moon9, 1, -4.5);
-  drawTextOnArc("Lua do", rm+32, moon10, 1, -2.5); drawTextOnArc("Cair das Folhas", rm+23, moon10, 0.9, -5.8);
-  drawTextOnArc("Lua da", rm+32, moon11, 1, -2.5); drawTextOnArc("Decomposiçao", rm+23, moon11, 1, -5);
-  drawTextOnArc("Lua das", rm+32, moon12, 1, -2.5); drawTextOnArc("Noites Longas", rm+23, moon12, 1, -5);
+function writeMoonsNamesNORD(g) {
+  g.textFont('Georgia')
+  g.stroke(0)
+  g.strokeWeight(0.5)
+  g.textSize(11.5)
+  drawTextOnArcBuff(g, "Lua da", rm+30, moon1, 1, -2.5); drawTextOnArcBuff(g, "Renovaçao", rm+20, moon1, 1, -4);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon2, 1, -2.5); drawTextOnArcBuff(g, "Limpeza", rm+23, moon2, 1, -3.2);
+  drawTextOnArcBuff(g, "Lua dos", rm+32, moon3, 1, -2.5); drawTextOnArcBuff(g, "Ventos Fortes", rm+23, moon3, 1, -5.5);
+  drawTextOnArcBuff(g, "Lua dos", rm+32, moon4, 1, -2.5); drawTextOnArcBuff(g, "Novos Começos", rm+23, moon4, 1, -5.5);
+  drawTextOnArcBuff(g, "Lua do", rm+32, moon5, 1, -2.5); drawTextOnArcBuff(g, "Crescimento", rm+23, moon5, 1, -5);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon6, 1, -2.5); drawTextOnArcBuff(g, "Floraçao", rm+23, moon6, 1, -3.5);
+  drawTextOnArcBuff(g, "Lua dos", rm+32, moon7, 1, -2.5); drawTextOnArcBuff(g, "Dias Longos", rm+23, moon7, 1, -4);
+  drawTextOnArcBuff(g, "Lua do", rm+32, moon8, 1, -2.5); drawTextOnArcBuff(g, "Amadurecimento", rm+23, moon8, 1, -6.5);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon9, 1, -2.5); drawTextOnArcBuff(g, "Abundancia", rm+23, moon9, 1, -4.5);
+  drawTextOnArcBuff(g, "Lua do", rm+32, moon10, 1, -2.5); drawTextOnArcBuff(g, "Cair das Folhas", rm+23, moon10, 0.9, -5.8);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon11, 1, -2.5); drawTextOnArcBuff(g, "Decomposiçao", rm+23, moon11, 1, -5);
+  drawTextOnArcBuff(g, "Lua das", rm+32, moon12, 1, -2.5); drawTextOnArcBuff(g, "Noites Longas", rm+23, moon12, 1, -5);
 }
 
-function writeMoonsNamesSUD() {
-  stroke(0)
-  strokeWeight(0.5)
-  noFill()
-  textSize(8.5)
-  drawTextOnArc("Lua da", rm+30, moon7, 1, -2.5); drawTextOnArc("Renovaçao", rm+23, moon7, 1, -4);
-  drawTextOnArc("Lua da", rm+32, moon8, 1, -2.5); drawTextOnArc("Limpeza", rm+23, moon8, 1, -3.2);
-  drawTextOnArc("Lua dos", rm+32, moon9, 1, -2.5); drawTextOnArc("Ventos Fortes", rm+23, moon9, 1, -5.5);
-  drawTextOnArc("Lua dos", rm+32, moon10, 1, -2.5); drawTextOnArc("Novos Começos", rm+23, moon10, 1, -5.5);
-  drawTextOnArc("Lua do", rm+32, moon11, 1, -2.5); drawTextOnArc("Crescimento", rm+23, moon11, 1, -5);
-  drawTextOnArc("Lua da", rm+32, moon12, 1, -2.5); drawTextOnArc("Floraçao", rm+23, moon12, 1, -3.5);
-  drawTextOnArc("Lua dos", rm+32, moon1, 1, -2.5); drawTextOnArc("Dias Longos", rm+23, moon1, 1, -4);
-  drawTextOnArc("Lua do", rm+32, moon2, 1, -2.5); drawTextOnArc("Amadurecimento", rm+23, moon2, 1, -6.5);
-  drawTextOnArc("Lua da", rm+32, moon3, 1, -2.5); drawTextOnArc("Abundancia", rm+23, moon3, 1, -4.5);
-  drawTextOnArc("Lua do", rm+32, moon4, 1, -2.5); drawTextOnArc("Cair das Folhas", rm+23, moon4, 0.9, -5.8);
-  drawTextOnArc("Lua da", rm+32, moon5, 1, -2.5); drawTextOnArc("Decomposiçao", rm+23, moon5, 1, -5);
-  drawTextOnArc("Lua das", rm+32, moon6, 1, -2.5); drawTextOnArc("Noites Longas", rm+23, moon6, 1, -5);
+function writeMoonsNamesSUD(g) {
+  g.stroke(0)
+  g.strokeWeight(0.5)
+  g.textFont('Georgia')
+  g.textSize(11.5)
+  drawTextOnArcBuff(g, "Lua da", rm+30, moon7, 1, -2.5); drawTextOnArcBuff(g, "Renovaçao", rm+20, moon7, 1, -4);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon8, 1, -2.5); drawTextOnArcBuff(g, "Limpeza", rm+23, moon8, 1, -3.2);
+  drawTextOnArcBuff(g, "Lua dos", rm+32, moon9, 1, -2.5); drawTextOnArcBuff(g, "Ventos Fortes", rm+23, moon9, 1, -6);
+  drawTextOnArcBuff(g, "Lua dos", rm+32, moon10, 1, -3); drawTextOnArcBuff(g, "Novos Começos", rm+23, moon10, 1, -6);
+  drawTextOnArcBuff(g, "Lua do", rm+32, moon11, 1, -2.5); drawTextOnArcBuff(g, "Crescimento", rm+23, moon11, 1, -6);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon12, 1, -2.5); drawTextOnArcBuff(g, "Floraçao", rm+23, moon12, 1, -3.5);
+  drawTextOnArcBuff(g, "Lua dos", rm+32, moon1, 1, -2.5); drawTextOnArcBuff(g, "Dias Longos", rm+23, moon1, 1, -4);
+  drawTextOnArcBuff(g, "Lua do", rm+32, moon2, 1, -2.5); drawTextOnArcBuff(g, "Amadurecimento", rm+23, moon2, 1, -6.5);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon3, 1, -2.5); drawTextOnArcBuff(g, "Abundancia", rm+23, moon3, 1, -4.5);
+  drawTextOnArcBuff(g, "Lua do", rm+32, moon4, 1, -2.5); drawTextOnArcBuff(g, "Cair das Folhas", rm+23, moon4, 0.9, -6);
+  drawTextOnArcBuff(g, "Lua da", rm+32, moon5, 1, -2.5); drawTextOnArcBuff(g, "Decomposiçao", rm+23, moon5, 1, -5);
+  drawTextOnArcBuff(g, "Lua das", rm+32, moon6, 1, -2.5); drawTextOnArcBuff(g, "Noites Longas", rm+23, moon6, 1, -6);
 }
 
 //Functions related to zooming and panning with the mouse
@@ -206,7 +231,7 @@ function wheel() {
   translate(offsetX, offsetY)
   scale(zoom)
   drawToday()
-  
+  textFont('Georgia')
 
   if (emisfero == "Nord") {
   rotate(getDegrees(todayNum)) //At 0 degrees, the wheel is set on the spring equinox
@@ -263,6 +288,7 @@ function wheel() {
   drawTextOnArc(spirits[0], r5, angle4, 6, 27)
   drawTextOnArc(spirits[1], r5, angle3, 6, 32)
   drawTextOnArc(spirits[2], r5, angle2, 7, 12)
+  
 }
 
 function writeCardinals() {
@@ -277,6 +303,7 @@ function writeCardinals() {
 }
 
 
+
 function drawConcCircles() {
   strokeWeight(2)
   noFill()
@@ -286,27 +313,39 @@ function drawConcCircles() {
   circle(0, 0, 240)
 }
 //Defining the function that makes text follow the arc
-function drawTextOnArc (str, r, startAngle, angleStep, adj) {
-  
-  const texts = []
+function drawTextOnArcBuff(g, str, r, startAngle, angleStep, adj) {
+  for (let i=0; i<str.length; i++) {
+    let theta = startAngle + i * (angleStep+0.3) + adj;
+    
+    x1 = (r+5) * cos(theta) + g.width/2
+    y1 = (r+5) * sin(theta) + g.height/2
+
+    g.push();
+    g.translate(x1, y1);
+    g.rotate(theta+90)
+    g.text(str[i], 0, 0);
+    g.pop()
+  }
+}
+
+function drawTextOnArc(str, r, startAngle, angleStep, adj) {
   for (let i=0; i<str.length; i++) {
     let theta = startAngle + i * angleStep + adj;
-
+    
     x1 = r * cos(theta)
     y1 = r * sin(theta)
-    
+
     push();
     translate(x1, y1);
-    rotate(theta + 90);
-    const atext = text(str[i], 0, 0);
+    rotate(theta+90)
+    text(str[i], 0, 0);
     pop()
-
-    texts.push(atext)
   }
-  return texts
 }
 
 function rotateWheel() {
+  //tG.rotate(frameCount)
+  //rotate(frameCount)
   angle1 += speed; angle2 += speed; angle3 += speed; angle4 += speed;
   moon1 += speed; moon2 += speed; moon3 += speed; moon4 += speed;
   moon5 += speed; moon6 += speed; moon7 += speed; moon8 += speed;
@@ -327,4 +366,3 @@ function drawMoon (angle) {
   let ym1 = rm * sin(angle)
   circle(xm1, ym1, 35) 
 }
-

@@ -1,4 +1,9 @@
 let entraBtn = document.getElementById("entra");
+entraBtn.disabled = true
+if (emisfero == "Nord" || "Sud") {
+    entraBtn.disabled = false
+}
+
 entraBtn.onclick = function() {
     location.href = "wheel.html"
 }
@@ -14,19 +19,26 @@ menuBtn.onclick = function() {
 }
 
 
+
 let emisferoSel = document.getElementById("emisfero")
 emisferoSel.addEventListener("input", () => {
     if (emisferoSel.value == "Emisferio Norte") {
         localStorage.setItem("emisfero", "Nord")
+        entraBtn.disabled = false
     } else if (emisferoSel.value == "Emisferio Sul") {
-        console.log("ciao")
         localStorage.setItem("emisfero", "Sud")
+        entraBtn.disabled = false
 }})
 
 let emisferoSelezionato = localStorage.getItem('emisfero')
 
 if (emisferoSelezionato == "Nord") {
     emisferoSel.value = "Emisferio Norte"
-} else {
+    
+} else if (emisferoSelezionato == "Sud") {
     emisferoSel.value = "Emisferio Sul"
+    
+} else {
+    emisferoSel.value = "Escolhe..."
+    entraBtn.disabled = true
 }
