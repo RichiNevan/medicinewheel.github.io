@@ -35,7 +35,28 @@ function preload() {
 }
 let tG;
 
+//Functions related to zooming and panning with the mouse
 
+if(windowWidth > 450) {
+function mouseWheel(event) {
+  let zoomFactor = 0.01;
+  if(event.delta > 0) {
+    zoom *= (1- zoomFactor);
+  } else {
+    zoom *= (1 + zoomFactor)
+  }
+  return false;
+}
+
+function mousePressed() {
+  dragStartX = mouseX - offsetX
+  dragStartY = mouseY - offsetY
+}
+function mouseDragged() {
+  offsetX = mouseX - dragStartX;
+  offsetY = mouseY - dragStartY;
+}
+}
 
 //Getting the numbered day of today & calculating moon degrees
 let tday = new Date();
@@ -72,6 +93,7 @@ if (!isRotating) {
 
 
 function setup() {
+  noLoop();
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
   textAlign(CENTER);
@@ -102,6 +124,7 @@ function setup() {
 
 function draw() {
   background(img);
+  loop()
   fill(180, 130, 170)
   stroke(30)
   strokeWeight(1)
@@ -231,25 +254,7 @@ function writeMoonsNamesSUD(g) {
   drawTextOnArcBuff(g, "Lua das", rm+32, moon6, 1, -2.5); drawTextOnArcBuff(g, "Noites Longas", rm+23, moon6, 0.9, -6);
 }
 
-//Functions related to zooming and panning with the mouse
-function mouseWheel(event) {
-  let zoomFactor = 0.01;
-  if(event.delta > 0) {
-    zoom *= (1- zoomFactor);
-  } else {
-    zoom *= (1 + zoomFactor)
-  }
-  return false;
-}
 
-function mousePressed() {
-  dragStartX = mouseX - offsetX
-  dragStartY = mouseY - offsetY
-}
-function mouseDragged() {
-  offsetX = mouseX - dragStartX;
-  offsetY = mouseY - dragStartY;
-}
 
 
 function wheel(angle) {
