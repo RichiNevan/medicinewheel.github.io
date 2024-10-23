@@ -27,7 +27,6 @@ let stagioni = [
     new Stagione(9, 22, 12, 21, "stag-autunno.html", "Outono")
 ]
 
-console.log(stagioni[0])
 
 let emisferoStag = localStorage.getItem('emisfero')
 if (emisferoStag == "Sud") {

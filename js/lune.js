@@ -128,8 +128,6 @@ if (emisferoLune == "Sud") {
     lune[11].meseInizio = 6; lune[11].giornoInizio = 6; lune[11].meseFine = 7; lune[11].giornoFine = 4; 
 }
 
-console.log(lune[0])
-
 let urlLune;
 let testoLune;
 let urlAniLune;

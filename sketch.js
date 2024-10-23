@@ -23,29 +23,25 @@ let realms = ["REINO ANIMAL", "REINO ESPIRITUAL", "REINO EMOCIONAL", "REINO MINE
 let spirits = ["WABOOSE", "WABUN", "SHAWNODESE", "MUDJEKEEWIS"]
 let emisfero = localStorage.getItem('emisfero')
 let displayDate;
-let bufalo, img, gill;
+let bufalo, img;
+const menuBtn = document.getElementById('menuBtn');
+const rotateBtn = document.getElementById('rotateBtn')
+let isRotating = false
+
+
 function preload() {
-  gill = loadFont('Gill Sans.otf')
   bufalo = loadImage('images/bufalone.png')
   img = loadImage('images/background.jpg')
 }
 let tG;
 
-function rotating() {
-  rotateWheel()
-  rotate(frameCount*0.05)
-}
 
-//Defining function to map angle degrees to days of the year
-function getDegrees(day) {
-  let updayted = day-80
-  let angle = map(updayted, 0, 365, 0, 360)
-  return angle
-}
 
 //Getting the numbered day of today & calculating moon degrees
 let tday = new Date();
 let todayNum = Math.ceil((tday - new Date(tday.getFullYear(),0,1)) / 86400000);
+let initialAngle = getDegrees(todayNum)
+
 
 let moon1 = (-getDegrees(15)-90);
 let moon2 = (-getDegrees(40)-90); 
@@ -60,22 +56,31 @@ let moon10 = (-getDegrees(276)-90); //cair das folhas
 let moon11 = (-getDegrees(306)-90); 
 let moon12 = (-getDegrees(336)-90); 
 
-const menuBtn = document.getElementById('menuBtn');
+
 menuBtn.addEventListener('click', () => {
   menuBtn.classList.toggle('clicked')
   document.getElementById('links').classList.toggle('dropdown')
 })
 
+rotateBtn.addEventListener('click', () => {
+if (!isRotating) {
+  isRotating = true
+} else {
+  isRotating = false
+}
+})
+
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  angleMode(DEGREES)
+  angleMode(DEGREES);
   textAlign(CENTER);
-
-  tG = createGraphics(windowWidth, windowHeight);
+  tG = createGraphics(windowWidth*2, windowHeight*2);
   tG.textAlign(CENTER, CENTER);
   tG.angleMode(DEGREES)
-  
-  
+ 
+ 
+
   if (emisfero == "Nord") {
     writeMoonsNamesNORD(tG)
     wheelTextNORD(tG)
@@ -86,7 +91,7 @@ function setup() {
 
   
   if (windowWidth < 450) {
-    zoom = 0.6
+    zoom = 0.5
     offsetY = -40
   } else {
     zoom = 1
@@ -105,23 +110,57 @@ function draw() {
   
   translate(width/2, height/2)
   
-  wheel()
-  
-  writeCardinals()
-  drawAllMoons()
+  if (isRotating) {
+    initialAngle += speed
+  }
+
+
+  wheel(initialAngle)
+  writeCardinals(initialAngle)
+  drawAllMoons(initialAngle)
  
+  
   push()
+  rotate(initialAngle)
   imageMode(CENTER)
   image(tG, 0, 0)
   pop()
 
+
+  
   //console.log(frameRate())
+  
+  //BUFALO
+  push()
+  imageMode(CENTER)
+  /*if (emisfero == "Nord") {
+  rotate(-initialAngle)
+  } else {
+    rotate(-initialAngle-180)
+  }*/
+  image(bufalo, 0, 0)
+  pop()
+
+
 }
-function drawAllMoons() {
-  if (emisfero == "Sud") {
-    rotate(180)
-  }
-  stroke(255, 255)
+
+
+
+//Defining function to map angle degrees to days of the year
+function getDegrees(day) {
+  let updayted = day-80
+  let angle = map(updayted, 0, 365, 0, 360)
+  return angle
+}
+
+
+function drawAllMoons(angle) {
+  push()
+  
+  rotate(angle) //At 0 degrees, the wheel is set on the spring equinox
+   
+  textFont('Georgia')
+  stroke(255)
   fill(0)
   strokeWeight(1.5)
   drawMoon(moon1); 
@@ -140,17 +179,18 @@ function drawAllMoons() {
   fill(255)
   noStroke()
   drawTextOnArc("1/12", rm-2, moon12, 1.1, -2)
-  drawTextOnArc("20/1", rm-2, moon1, 1.1, -2)
+  drawTextOnArc("20/1", rm-2, moon1, 1.1, -1.7)
   drawTextOnArc("19/2", rm-2, moon2, 1.1, -2)
-  drawTextOnArc("21/3", rm-2, moon3, 1.3, -2.5)
-  drawTextOnArc("20/4", rm-2, moon4, 1.1, -2)
-  drawTextOnArc("21/5", rm-2, moon5, 1.1, -2)
-  drawTextOnArc("21/6", rm-2, moon6, 1.1, -2)
+  drawTextOnArc("21/3", rm-2, moon3, 1.3, -2)
+  drawTextOnArc("20/4", rm-2, moon4, 1.1, -1.8)
+  drawTextOnArc("21/5", rm-2, moon5, 1.1, -1.8)
+  drawTextOnArc("21/6", rm-2, moon6, 1.1, -1.8)
   drawTextOnArc("22/7", rm-2, moon7, 1.1, -2)
-  drawTextOnArc("23/8", rm-2, moon8, 1.1, -2)
+  drawTextOnArc("23/8", rm-2, moon8, 1.1, -1.8)
   drawTextOnArc("23/9", rm-2, moon9, 1.1, -2)
   drawTextOnArc("2/10", rm-2, moon10, 1.1, -2)
   drawTextOnArc("1/11", rm-2, moon11, 1.1, -1.7)
+  pop()
 }
 
 function writeMoonsNamesNORD(g) {
@@ -212,15 +252,15 @@ function mouseDragged() {
 }
 
 
-function wheel() {
+function wheel(angle) {
   translate(offsetX, offsetY)
   scale(zoom)
   drawToday()
-
+  push()
   if (emisfero == "Nord") {
-  rotate(getDegrees(todayNum)) //At 0 degrees, the wheel is set on the spring equinox
+  rotate(angle) //At 0 degrees, the wheel is set on the spring equinox
   } else {
-    rotate(getDegrees(todayNum)+180)
+    rotate(angle+180)
   }
 
   //Wheel's colored sections
@@ -233,18 +273,11 @@ function wheel() {
   let pri = arc(0, 0, 500, 500, angle3, angle4);
   fill(225)
   let inv = arc(0, 0, 500, 500, angle4, angle1);
-  push()
-  imageMode(CENTER)
-  if (emisfero == "Nord") {
-  rotate(-getDegrees(todayNum))
-  } else {
-    rotate(-getDegrees(todayNum)-180)
-  }
-  image(bufalo, 0, 0)
-  pop()
+ 
   
   // Concentric circles
   drawConcCircles()
+  pop()
 }
 
 function wheelTextNORD(g) {
@@ -310,7 +343,13 @@ function wheelTextSUD(g) {
 }
 
 
-function writeCardinals() {
+function writeCardinals(angle) {
+  push()
+  if (emisfero == "Nord") {
+  rotate(angle) //At 0 degrees, the wheel is set on the spring equinox
+  } else {
+    rotate(angle+180)
+  }
   textSize(40)
   strokeWeight(1.0)
   noFill()
@@ -319,6 +358,7 @@ function writeCardinals() {
   drawTextOnArc("O", rm+45, angle2, 1, 0)
   drawTextOnArc("S", rm+45, angle3, 1, 0)
   drawTextOnArc("E", rm+45, angle4, 1, 0)
+  pop()
 }
 
 
@@ -372,6 +412,7 @@ function rotateWheel() {
 }
 
 function drawToday() {
+  textFont('Georgia')
   fill(180, 130, 170)
   stroke(30)
   strokeWeight(1)

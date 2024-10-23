@@ -67,5 +67,3 @@ for (let direzione of direzioni) {
 const link = document.getElementById("direzione");
 link.innerHTML = testoDir;
 link.href = urlDir;
-
-console.log(urlDir)
