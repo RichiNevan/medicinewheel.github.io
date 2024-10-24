@@ -31,14 +31,33 @@ let isRotating = false
 let isLoaded = false
 let mouseActive = true
 let tG;
+let allImagesLoaded = false;
+let loadTimeout;
+let loadedImages = 0;
 
 function preload() {
-  bufalo = loadImage('images/bufalone.png', () => {
-    isLoaded = true;
-  })
-  img = loadImage('images/background.jpg', () => {
-    isLoaded = true;
-  })
+  bufalo = loadImage('images/bufalone.png', imageLoaded, loadingError)
+  img = loadImage('images/background.jpg', imageLoaded, loadingError)
+
+  loadTimeout = setTimeout(() => {
+    if (!allImagesLoaded) {
+      location.reload()
+    }
+  }, 6000);
+}
+
+function imageLoaded() {
+  loadedImages++
+  if (loadedImages === 2) {
+    allImagesLoaded = true
+    clearTimeout(loadTimeout);
+    fadeOutLoadingScreen()
+  }
+}
+
+function loadingError(err) {
+  console.log('Error loading image: ', err)
+  location.reload()
 }
 
 //Moons
@@ -93,6 +112,7 @@ let initialAngle = getDegrees(todayNum)
 
 //Menu Button and Overlay
 menuBtn.addEventListener('click', (e) => {
+  e.preventDefault();
   e.stopPropagation();
   menuBtn.classList.toggle('clicked')
   document.getElementById('links').classList.toggle('dropdown')
@@ -147,6 +167,7 @@ function fadeOutLoadingScreen() {
 
 
 function setup() {
+  console.log('setup running')
   noLoop();
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
@@ -155,6 +176,7 @@ function setup() {
   tG.textAlign(CENTER, CENTER);
   tG.angleMode(DEGREES)
  
+  /*
   if(isLoaded) {
     fadeOutLoadingScreen()
   } else {
@@ -164,7 +186,7 @@ function setup() {
         location.reload()
       }
     }, 6000);
-  }
+  }*/
 
   if (emisfero == "Nord") {
     writeMoonsNamesNORD(tG)
@@ -186,12 +208,11 @@ function setup() {
 
 
 function draw() {
-  
-  if(isLoaded) {
-    background(img);
-    loop()
-  } 
-  
+  //console.log('draw runin')
+  if(allImagesLoaded) {
+     //console.log('draw really running')
+  background(img);
+  loop()
   fill(180, 130, 170)
   stroke(30)
   strokeWeight(1)
@@ -228,12 +249,12 @@ function draw() {
   } else {
     rotate(-initialAngle-180)
   }*/
- if (isLoaded) {
   image(bufalo, 0, 0)
- }
   pop()
 
-
+  } else {
+    location.reload()
+  }
 }
 
 
