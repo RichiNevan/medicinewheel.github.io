@@ -33,6 +33,7 @@ let tG;
 let allImagesLoaded = false;
 let loadTimeout;
 let loadedImages = 0;
+let rotateDiv = document.getElementById('clickRotate')
 
 //Moons
 let moon1 = (-getDegrees(1)-90); //Renovaçao
@@ -73,38 +74,6 @@ function loadingError(err) {
   console.log('Error loading image: ', err)
 }
 
-
-
-
-
-//Functions related to zooming and panning with the mouse, only for big devices
-if(windowWidth > 450) {
-      function mouseWheel(event) {
-        let zoomFactor = 0.01;
-        if(event.delta > 0) {
-          zoom *= (1- zoomFactor);
-        } else {
-          zoom *= (1 + zoomFactor)
-        }
-      return false;
-      }
-  function mousePressed() {
-    dragStartX = mouseX - offsetX
-    dragStartY = mouseY - offsetY
-  }
-  function mouseDragged() {
-    offsetX = mouseX - dragStartX;
-    offsetY = mouseY - dragStartY;
-  }
-  function doubleClicked() {
-    if (!isRotating) {
-      isRotating = true
-    } else {
-      isRotating = false
-    }
-    }
-}
-
 //Getting the numbered day of today & calculating moon degrees
 let tday = new Date();
 let todayNum = Math.ceil((tday - new Date(tday.getFullYear(),0,1)) / 86400000);
@@ -124,21 +93,65 @@ overlay.addEventListener('click', () => {
   overlay.classList.remove('active')
 })
 
+//Functions related to zooming and panning with the mouse, only for big devices
+function mouseWheel(event) {
+  let zoomFactor = 0.01;
+  if(event.delta > 0) {
+    zoom *= (1- zoomFactor);
+  } else {
+    zoom *= (1 + zoomFactor)
+  }
+  return false;
+}
+function mousePressed() {
+  if (windowWidth > 450) {
+  dragStartX = mouseX - offsetX
+  dragStartY = mouseY - offsetY
+  }
+}
+function mouseDragged() {
+  if (windowWidth > 450) {
+  offsetX = mouseX - dragStartX;
+  offsetY = mouseY - dragStartY;
+  }
+}
+function doubleClicked() {
+  if (windowWidth > 450) {
+  if (!isRotating) {
+    isRotating = true
+  } else {
+  isRotating = false
+  }
+}
+}
+
 //Double tap for small devices
-if (windowWidth < 450) {
+
 function touchStarted(e) {
   let currentTime = millis();
   let tapLength = currentTime - lastTap;
   lastTap = currentTime;
 
+  const touchX = touches[0].x;
+  const touchY = touches[0].y;
+
+  const divRect = rotateDiv.getBoundingClientRect()
+
+  if (
+    touchX > divRect.left &&
+    touchX < divRect.right &&
+    touchY > divRect.top &&
+    touchY < divRect.bottom
+  ) {
   if (tapLength < 350 && tapLength > 0) {
     handleDoubleTap();
   }
 
   e.preventDefault()
   return false;
+  }
 }
-}
+
 function handleDoubleTap() {
   if (!isRotating) {
     isRotating = true
