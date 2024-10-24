@@ -29,11 +29,25 @@ const menuBtn = document.getElementById('menuBtn');
 let overlay = document.getElementById('overlay')
 let isRotating = false
 let isLoaded = false
-let mouseActive = true
 let tG;
 let allImagesLoaded = false;
 let loadTimeout;
 let loadedImages = 0;
+
+//Moons
+let moon1 = (-getDegrees(1)-90); //Renovaçao
+let moon2 = (-getDegrees(29)-90); //Limpeza
+let moon3 = (-getDegrees(59)-90); //Ventos fortes
+let moon4 = (-getDegrees(88)-90); //Novos começos
+let moon5 = (-getDegrees(117)-90); //Crescimento
+let moon6 = (-getDegrees(147)-90); //Floraçao
+let moon7 = (-getDegrees(176)-90); //Dias Longos
+let moon8 = (-getDegrees(205)-90); //Amadurecim
+let moon9 = (-getDegrees(235)-90); //Abundancia
+let moon10 = (-getDegrees(276)-90); //Cair das Folhas --aggiornare da qui, inclusa
+let moon11 = (-getDegrees(306)-90); //Decomposiçao
+let moon12 = (-getDegrees(336)-90); //Noites Longas
+
 
 function preload() {
   bufalo = loadImage('images/bufalone.png', imageLoaded, loadingError)
@@ -57,28 +71,14 @@ function imageLoaded() {
 
 function loadingError(err) {
   console.log('Error loading image: ', err)
-  location.reload()
 }
 
-//Moons
-let moon1 = (-getDegrees(1)-90); //Renovaçao
-let moon2 = (-getDegrees(29)-90); //Limpeza
-let moon3 = (-getDegrees(59)-90); //Ventos fortes
-let moon4 = (-getDegrees(88)-90); //Novos começos
-let moon5 = (-getDegrees(117)-90); //Crescimento
-let moon6 = (-getDegrees(147)-90); //Floraçao
-let moon7 = (-getDegrees(176)-90); //Dias Longos
-let moon8 = (-getDegrees(205)-90); //Amadurecimento
-let moon9 = (-getDegrees(235)-90); //Abundancia
-let moon10 = (-getDegrees(276)-90); //Cair das Folhas --aggiornare da qui, inclusa
-let moon11 = (-getDegrees(306)-90); //Decomposiçao
-let moon12 = (-getDegrees(336)-90); //Noites Longas
 
 
 
 
 //Functions related to zooming and panning with the mouse, only for big devices
-if(windowWidth > 450 && mouseActive) {
+if(windowWidth > 450) {
       function mouseWheel(event) {
         let zoomFactor = 0.01;
         if(event.delta > 0) {
@@ -117,17 +117,11 @@ menuBtn.addEventListener('click', (e) => {
   menuBtn.classList.toggle('clicked')
   document.getElementById('links').classList.toggle('dropdown')
   overlay.classList.toggle('active')
-  if (mouseActive) {
-    mouseActive = false
-  } else {
-    mouseActive = true
-  }
 })
 overlay.addEventListener('click', () => {
   menuBtn.classList.remove('clicked')
   document.getElementById('links').classList.remove('dropdown')
   overlay.classList.remove('active')
-  mouseActive = true
 })
 
 //Double tap for small devices
@@ -135,12 +129,12 @@ if (windowWidth < 450) {
 function touchStarted(e) {
   let currentTime = millis();
   let tapLength = currentTime - lastTap;
+  lastTap = currentTime;
 
   if (tapLength < 350 && tapLength > 0) {
     handleDoubleTap();
   }
 
-  lastTap = currentTime;
   e.preventDefault()
   return false;
 }
@@ -167,7 +161,6 @@ function fadeOutLoadingScreen() {
 
 
 function setup() {
-  console.log('setup running')
   noLoop();
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
@@ -208,11 +201,12 @@ function setup() {
 
 
 function draw() {
-  //console.log('draw runin')
-  if(allImagesLoaded) {
-     //console.log('draw really running')
-  background(img);
   loop()
+  if(allImagesLoaded) {
+    background(img);
+    
+  } 
+  
   fill(180, 130, 170)
   stroke(30)
   strokeWeight(1)
@@ -244,17 +238,12 @@ function draw() {
   //BUFALO
   push()
   imageMode(CENTER)
-  /*if (emisfero == "Nord") {
-  rotate(-initialAngle)
-  } else {
-    rotate(-initialAngle-180)
-  }*/
+  if (allImagesLoaded) {
   image(bufalo, 0, 0)
+  }
   pop()
 
-  } else {
-    location.reload()
-  }
+
 }
 
 
@@ -291,7 +280,7 @@ function drawAllMoons(angle) {
   textSize(14)
   fill(255)
   noStroke()
-  drawTextOnArc("1/1", rm-2, moon1, 1.1, -1.9)
+  drawTextOnArc("1/1", rm-2, moon1, 1.1, -1.4)
   drawTextOnArc("29/1", rm-2, moon2, 1.1, -1.8)
   drawTextOnArc("28/2", rm-2, moon3, 1.3, -2)
   drawTextOnArc("29/3", rm-2, moon4, 1.1, -1.8)
