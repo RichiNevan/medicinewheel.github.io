@@ -33,7 +33,9 @@ let mouseActive = true
 let tG;
 
 function preload() {
-  bufalo = loadImage('images/bufalone.png')
+  bufalo = loadImage('images/bufalone.png', () => {
+    isLoaded = true;
+  })
   img = loadImage('images/background.jpg', () => {
     isLoaded = true;
   })
@@ -90,7 +92,8 @@ let todayNum = Math.ceil((tday - new Date(tday.getFullYear(),0,1)) / 86400000);
 let initialAngle = getDegrees(todayNum)
 
 //Menu Button and Overlay
-menuBtn.addEventListener('click', () => {
+menuBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
   menuBtn.classList.toggle('clicked')
   document.getElementById('links').classList.toggle('dropdown')
   overlay.classList.toggle('active')
@@ -109,7 +112,7 @@ overlay.addEventListener('click', () => {
 
 //Double tap for small devices
 if (windowWidth < 450) {
-function touchStarted() {
+function touchStarted(e) {
   let currentTime = millis();
   let tapLength = currentTime - lastTap;
 
@@ -118,6 +121,7 @@ function touchStarted() {
   }
 
   lastTap = currentTime;
+  e.preventDefault()
   return false;
 }
 }
@@ -159,7 +163,7 @@ function setup() {
         console.log('Timeout reached, proceeding without all resources...')
         location.reload()
       }
-    }, 10000);
+    }, 6000);
   }
 
   if (emisfero == "Nord") {
@@ -184,9 +188,6 @@ function setup() {
 function draw() {
   
   if(isLoaded) {
-
-    //loadingScreen.style.display = 'none';
-    
     background(img);
     loop()
   } 
@@ -227,7 +228,9 @@ function draw() {
   } else {
     rotate(-initialAngle-180)
   }*/
+ if (isLoaded) {
   image(bufalo, 0, 0)
+ }
   pop()
 
 
