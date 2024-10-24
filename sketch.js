@@ -25,38 +25,55 @@ let emisfero = localStorage.getItem('emisfero')
 let displayDate;
 let bufalo, img;
 const menuBtn = document.getElementById('menuBtn');
-const rotateBtn = document.getElementById('rotateBtn')
+let overlay = document.getElementById('overlay')
 let isRotating = false
+let isLoaded = false
+let mouseActive = true
+
+let moon1 = (-getDegrees(1)-90); //Renovaçao
+let moon2 = (-getDegrees(29)-90); //Limpeza
+let moon3 = (-getDegrees(59)-90); //Ventos fortes
+let moon4 = (-getDegrees(88)-90); //Novos começos
+let moon5 = (-getDegrees(117)-90); //Crescimento
+let moon6 = (-getDegrees(147)-90); //Floraçao
+let moon7 = (-getDegrees(176)-90); //Dias Longos
+let moon8 = (-getDegrees(205)-90); //Amadurecimento
+let moon9 = (-getDegrees(235)-90); //Abundancia
+let moon10 = (-getDegrees(276)-90); //Cair das Folhas --aggiornare da qui, inclusa
+let moon11 = (-getDegrees(306)-90); //Decomposiçao
+let moon12 = (-getDegrees(336)-90); //Noites Longas
 
 
 function preload() {
   bufalo = loadImage('images/bufalone.png')
-  img = loadImage('images/background.jpg')
+  img = loadImage('images/background.jpg', () => {
+    isLoaded = true;
+  })
 }
 let tG;
 
 //Functions related to zooming and panning with the mouse
 
-if(windowWidth > 450) {
-function mouseWheel(event) {
-  let zoomFactor = 0.01;
-  if(event.delta > 0) {
-    zoom *= (1- zoomFactor);
-  } else {
-    zoom *= (1 + zoomFactor)
-  }
-  return false;
-}
+  if(windowWidth > 450 && mouseActive) {
+      function mouseWheel(event) {
+        let zoomFactor = 0.01;
+        if(event.delta > 0) {
+          zoom *= (1- zoomFactor);
+        } else {
+          zoom *= (1 + zoomFactor)
+        }
+      return false;
+      }
 
-function mousePressed() {
-  dragStartX = mouseX - offsetX
-  dragStartY = mouseY - offsetY
-}
-function mouseDragged() {
-  offsetX = mouseX - dragStartX;
-  offsetY = mouseY - dragStartY;
-}
-}
+  function mousePressed() {
+    dragStartX = mouseX - offsetX
+    dragStartY = mouseY - offsetY
+  }
+  function mouseDragged() {
+    offsetX = mouseX - dragStartX;
+    offsetY = mouseY - dragStartY;
+  }
+  }
 
 //Getting the numbered day of today & calculating moon degrees
 let tday = new Date();
@@ -64,32 +81,44 @@ let todayNum = Math.ceil((tday - new Date(tday.getFullYear(),0,1)) / 86400000);
 let initialAngle = getDegrees(todayNum)
 
 
-let moon1 = (-getDegrees(15)-90);
-let moon2 = (-getDegrees(40)-90); 
-let moon3 = (-getDegrees(70)-90); 
-let moon4 = (-getDegrees(99)-90); 
-let moon5 = (-getDegrees(128)-90);
-let moon6 = (-getDegrees(158)-90); 
-let moon7 = (-getDegrees(187)-90);
-let moon8 = (-getDegrees(217)-90);
-let moon9 = (-getDegrees(246)-90);
-let moon10 = (-getDegrees(276)-90); //cair das folhas 
-let moon11 = (-getDegrees(306)-90); 
-let moon12 = (-getDegrees(336)-90); 
+
 
 
 menuBtn.addEventListener('click', () => {
   menuBtn.classList.toggle('clicked')
   document.getElementById('links').classList.toggle('dropdown')
+  overlay.classList.toggle('active')
+  if (mouseActive) {
+    mouseActive = false
+  } else {
+    mouseActive = true
+  }
 })
 
-rotateBtn.addEventListener('click', () => {
+overlay.addEventListener('click', () => {
+  menuBtn.classList.remove('clicked')
+  document.getElementById('links').classList.remove('dropdown')
+  overlay.classList.remove('active')
+  mouseActive = true
+})
+
+function doubleClicked() {
 if (!isRotating) {
   isRotating = true
 } else {
   isRotating = false
 }
-})
+}
+
+function fadeOutLoadingScreen() {
+  const loadingScreen = document.getElementById('loadingScreen')
+  loadingScreen.style.opacity = '0'
+
+  setTimeout(() => {
+    loadingScreen.style.visibility = 'hidden'
+  }, 700);
+}
+
 
 
 function setup() {
@@ -101,7 +130,16 @@ function setup() {
   tG.textAlign(CENTER, CENTER);
   tG.angleMode(DEGREES)
  
- 
+  if(isLoaded) {
+    fadeOutLoadingScreen()
+  } else {
+    setTimeout(() => {
+      if (isLoaded) {
+        console.log('Timeout reached, proceeding without all resources...')
+        fadeOutLoadingScreen()
+      }
+    }, 4000);
+  }
 
   if (emisfero == "Nord") {
     writeMoonsNamesNORD(tG)
@@ -113,7 +151,7 @@ function setup() {
 
   
   if (windowWidth < 450) {
-    zoom = 0.5
+    zoom = 0.55
     offsetY = -40
   } else {
     zoom = 1
@@ -123,8 +161,15 @@ function setup() {
 
 
 function draw() {
-  background(img);
-  loop()
+  
+  if(isLoaded) {
+
+    //loadingScreen.style.display = 'none';
+    
+    background(img);
+    loop()
+  } 
+  
   fill(180, 130, 170)
   stroke(30)
   strokeWeight(1)
@@ -201,18 +246,18 @@ function drawAllMoons(angle) {
   textSize(14)
   fill(255)
   noStroke()
-  drawTextOnArc("1/12", rm-2, moon12, 1.1, -2)
-  drawTextOnArc("20/1", rm-2, moon1, 1.1, -1.7)
-  drawTextOnArc("19/2", rm-2, moon2, 1.1, -2)
-  drawTextOnArc("21/3", rm-2, moon3, 1.3, -2)
-  drawTextOnArc("20/4", rm-2, moon4, 1.1, -1.8)
-  drawTextOnArc("21/5", rm-2, moon5, 1.1, -1.8)
-  drawTextOnArc("21/6", rm-2, moon6, 1.1, -1.8)
-  drawTextOnArc("22/7", rm-2, moon7, 1.1, -2)
-  drawTextOnArc("23/8", rm-2, moon8, 1.1, -1.8)
-  drawTextOnArc("23/9", rm-2, moon9, 1.1, -2)
-  drawTextOnArc("2/10", rm-2, moon10, 1.1, -2)
+  drawTextOnArc("01/1", rm-2, moon1, 1.1, -1.7)
+  drawTextOnArc("29/1", rm-2, moon2, 1.1, -2)
+  drawTextOnArc("28/2", rm-2, moon3, 1.3, -2)
+  drawTextOnArc("29/3", rm-2, moon4, 1.1, -1.8)
+  drawTextOnArc("27/4", rm-2, moon5, 1.1, -1.8)
+  drawTextOnArc("27/5", rm-2, moon6, 1.1, -1.8)
+  drawTextOnArc("25/6", rm-2, moon7, 1.1, -2)
+  drawTextOnArc("24/7", rm-2, moon8, 1.1, -1.8)
+  drawTextOnArc("23/8", rm-2, moon9, 1.1, -2)
+  drawTextOnArc("2/10", rm-2, moon10, 1.1, -2) //aggiornare da qui, inclusa
   drawTextOnArc("1/11", rm-2, moon11, 1.1, -1.7)
+  drawTextOnArc("1/12", rm-2, moon12, 1.1, -2)
   pop()
 }
 
