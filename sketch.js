@@ -23,13 +23,23 @@ let realms = ["REINO ANIMAL", "REINO ESPIRITUAL", "REINO EMOCIONAL", "REINO MINE
 let spirits = ["WABOOSE", "WABUN", "SHAWNODESE", "MUDJEKEEWIS"]
 let emisfero = localStorage.getItem('emisfero')
 let displayDate;
+let lastTap = 0;
 let bufalo, img;
 const menuBtn = document.getElementById('menuBtn');
 let overlay = document.getElementById('overlay')
 let isRotating = false
 let isLoaded = false
 let mouseActive = true
+let tG;
 
+function preload() {
+  bufalo = loadImage('images/bufalone.png')
+  img = loadImage('images/background.jpg', () => {
+    isLoaded = true;
+  })
+}
+
+//Moons
 let moon1 = (-getDegrees(1)-90); //Renovaçao
 let moon2 = (-getDegrees(29)-90); //Limpeza
 let moon3 = (-getDegrees(59)-90); //Ventos fortes
@@ -44,17 +54,10 @@ let moon11 = (-getDegrees(306)-90); //Decomposiçao
 let moon12 = (-getDegrees(336)-90); //Noites Longas
 
 
-function preload() {
-  bufalo = loadImage('images/bufalone.png')
-  img = loadImage('images/background.jpg', () => {
-    isLoaded = true;
-  })
-}
-let tG;
 
-//Functions related to zooming and panning with the mouse
 
-  if(windowWidth > 450 && mouseActive) {
+//Functions related to zooming and panning with the mouse, only for big devices
+if(windowWidth > 450 && mouseActive) {
       function mouseWheel(event) {
         let zoomFactor = 0.01;
         if(event.delta > 0) {
@@ -64,7 +67,6 @@ let tG;
         }
       return false;
       }
-
   function mousePressed() {
     dragStartX = mouseX - offsetX
     dragStartY = mouseY - offsetY
@@ -73,17 +75,21 @@ let tG;
     offsetX = mouseX - dragStartX;
     offsetY = mouseY - dragStartY;
   }
-  }
+  function doubleClicked() {
+    if (!isRotating) {
+      isRotating = true
+    } else {
+      isRotating = false
+    }
+    }
+}
 
 //Getting the numbered day of today & calculating moon degrees
 let tday = new Date();
 let todayNum = Math.ceil((tday - new Date(tday.getFullYear(),0,1)) / 86400000);
 let initialAngle = getDegrees(todayNum)
 
-
-
-
-
+//Menu Button and Overlay
 menuBtn.addEventListener('click', () => {
   menuBtn.classList.toggle('clicked')
   document.getElementById('links').classList.toggle('dropdown')
@@ -94,7 +100,6 @@ menuBtn.addEventListener('click', () => {
     mouseActive = true
   }
 })
-
 overlay.addEventListener('click', () => {
   menuBtn.classList.remove('clicked')
   document.getElementById('links').classList.remove('dropdown')
@@ -102,14 +107,30 @@ overlay.addEventListener('click', () => {
   mouseActive = true
 })
 
-function doubleClicked() {
-if (!isRotating) {
-  isRotating = true
-} else {
-  isRotating = false
+//Double tap for small devices
+if (windowWidth < 450) {
+function touchStarted() {
+  let currentTime = millis();
+  let tapLength = currentTime - lastTap;
+
+  if (tapLength < 350 && tapLength > 0) {
+    handleDoubleTap();
+  }
+
+  lastTap = currentTime;
+  return false;
 }
+}
+function handleDoubleTap() {
+  if (!isRotating) {
+    isRotating = true
+  } else {
+    isRotating = false
+  }
 }
 
+
+//FadeOut function for loading screen
 function fadeOutLoadingScreen() {
   const loadingScreen = document.getElementById('loadingScreen')
   loadingScreen.style.opacity = '0'
@@ -136,9 +157,9 @@ function setup() {
     setTimeout(() => {
       if (isLoaded) {
         console.log('Timeout reached, proceeding without all resources...')
-        fadeOutLoadingScreen()
+        location.reload()
       }
-    }, 4000);
+    }, 10000);
   }
 
   if (emisfero == "Nord") {
@@ -246,8 +267,8 @@ function drawAllMoons(angle) {
   textSize(14)
   fill(255)
   noStroke()
-  drawTextOnArc("01/1", rm-2, moon1, 1.1, -1.7)
-  drawTextOnArc("29/1", rm-2, moon2, 1.1, -2)
+  drawTextOnArc("1/1", rm-2, moon1, 1.1, -1.9)
+  drawTextOnArc("29/1", rm-2, moon2, 1.1, -1.8)
   drawTextOnArc("28/2", rm-2, moon3, 1.3, -2)
   drawTextOnArc("29/3", rm-2, moon4, 1.1, -1.8)
   drawTextOnArc("27/4", rm-2, moon5, 1.1, -1.8)

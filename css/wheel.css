@@ -16,7 +16,7 @@ body {
     justify-content: center;
     font-size: 2rem;
     color: #000;
-    z-index: 9999; 
+    z-index: 99; 
     transition: opacity 0.7s ease, visibility 0.7s ease; /* Smooth fade effect */
     opacity: 1;
     visibility: visible;
@@ -36,6 +36,69 @@ a {
 }
 
 
+
+#loadingText {
+    position: absolute;
+    top: 245px;
+    font-size: 15px;
+    color: rgb(141, 0, 0);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#loadingWheel {
+    position: absolute;
+    top: 150px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 50%;
+    border: solid 1.9px black;
+    margin: 50px;
+    z-index: 100;
+    flex-wrap: wrap;
+    overflow: hidden;
+    animation: rotation 2s ease-in-out infinite;
+}
+
+@keyframes rotation {
+    0% {transform: rotateZ(0deg)}
+    50% {transform: rotateZ(180deg)}
+    100% {transform: rotateZ(360deg)}
+}
+
+.yellow {
+    width: 50%;
+    height: 50%;
+    background-color: rgb(255, 237, 74);
+    position: relative;
+    z-index: 105;
+}
+
+.red {
+    width: 50%;
+    height: 50%;
+    background-color: rgb(255, 0, 0);
+    position: relative;
+    z-index: 105;
+}
+
+.black {
+    width: 50%;
+    height: 50%;
+    background-color: rgb(58, 0, 0);
+    position: relative;
+    z-index: 105;
+}
+
+.white {
+    width: 50%;
+    height: 50%;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+    z-index: 105;
+}
+
 #menuBtn {
     position: absolute;
     top: 50px;
@@ -51,7 +114,7 @@ a {
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 10px, 10px, 10px, 10;
-    z-index: 999;
+    z-index: 95;
     box-shadow: 5px 5px 3px 5px rgba(0, 0, 0, 0.26);
 }
 
