@@ -34,6 +34,7 @@ let allImagesLoaded = false;
 let loadTimeout;
 let loadedImages = 0;
 let rotateDiv = document.getElementById('clickRotate')
+let popUpOpen = false;
 
 //Moons
 let moon1 = (-getDegrees(1)-90); //Renovaçao
@@ -86,15 +87,19 @@ menuBtn.addEventListener('click', (e) => {
   menuBtn.classList.toggle('clicked')
   document.getElementById('links').classList.toggle('dropdown')
   overlay.classList.toggle('active')
+  popUpOpen = !popUpOpen
+  console.log(popUpOpen)
 })
 overlay.addEventListener('click', () => {
   menuBtn.classList.remove('clicked')
   document.getElementById('links').classList.remove('dropdown')
   overlay.classList.remove('active')
+  popUpOpen = false;
 })
 
 //Functions related to zooming and panning with the mouse, only for big devices
 function mouseWheel(event) {
+  if (!popUpOpen) {
   let zoomFactor = 0.01;
   if(event.delta > 0) {
     zoom *= (1- zoomFactor);
@@ -103,19 +108,25 @@ function mouseWheel(event) {
   }
   return false;
 }
+}
 function mousePressed() {
+  if (!popUpOpen) {
   if (windowWidth > 450) {
   dragStartX = mouseX - offsetX
   dragStartY = mouseY - offsetY
   }
+  }
 }
 function mouseDragged() {
+  if (!popUpOpen) {
   if (windowWidth > 450) {
   offsetX = mouseX - dragStartX;
   offsetY = mouseY - dragStartY;
   }
 }
+}
 function doubleClicked() {
+  if (!popUpOpen) {
   if (windowWidth > 450) {
   if (!isRotating) {
     isRotating = true
@@ -124,10 +135,12 @@ function doubleClicked() {
   }
 }
 }
+}
 
 //Double tap for small devices
 
 function touchStarted(e) {
+  if (!popUpOpen) {
   let currentTime = millis();
   let tapLength = currentTime - lastTap;
   lastTap = currentTime;
@@ -150,6 +163,7 @@ function touchStarted(e) {
   e.preventDefault()
   return false;
   }
+}
 }
 
 function handleDoubleTap() {
